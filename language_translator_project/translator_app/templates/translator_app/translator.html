@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Language Translator</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'translator_app/translator.css' %}">
+</head>
+<body>
+    <div class="translator-container">
+        <h1 class="heading">CodeClause Internship<br> Live Language Translator</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="textarea-container">
+                <div class="textarea-row">
+                    <label for="original_text">Original Text:</label>
+                    <textarea name="original_text" rows="4" cols="50">{{ original_text }}</textarea>
+                </div>
+                <div class="textarea-row">
+                    <label for="translated_text">Translated Text:</label>
+                    <textarea name="translated_text" rows="4" cols="50" readonly>{{ translated_text }}</textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <label for="source_language">Source Language:</label>
+                <select name="source_language">
+                    {% for language in languages %}
+                        <option value="{{ language.id }}">{{ language.name }}</option>
+                    {% endfor %}
+                </select>
+                <label for="target_language">Target Language:</label>
+                <select name="target_language">
+                    {% for language in languages %}
+                        <option value="{{ language.id }}">{{ language.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="button-row">
+                <input type="submit" name="reset_original" value="Reset" class="small-button">
+                <input type="submit" name="translate" value="Translate" class="button">
+                <input type="submit" name="clear_history" value="Clear History" class="small-button">
+            </div>
+        </form>
+        
+        <h2>Recent Translations:</h2>
+        <ul>
+            {% for translation in translations %}
+                <li>{{ translation.original_text }} - {{ translation.translated_text }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
